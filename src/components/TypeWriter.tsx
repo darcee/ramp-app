@@ -29,7 +29,6 @@ const TypeWriter: React.FC<TypeWriterProps> = ({ text, speed = 500, onComplete }
             } else {
                 clearInterval(timer);
                 setIsTyping(false);
-                // Call the onComplete callback when typing finishes
                 if (onComplete) {
                     onComplete();
                 }

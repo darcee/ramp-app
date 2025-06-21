@@ -3,6 +3,83 @@ import TypeWriter from './TypeWriter';
 import image1 from '../assets/captureTheFlag.png';
 import image2 from '../assets/zencorgi.webp';
 
+// Node.js script to get the URL:
+// const https = require('https');
+// async function getUrlContent(url) {
+//     return new Promise((resolve, reject) => {
+//         try {
+//             const req = https.get(url, (res) => {
+//                 let data = '';
+//                 res.on('data', (chunk) => {
+//                     data += chunk;
+//                 });
+//
+//                 res.on('end', () => {
+//                     if (res.statusCode >= 200 && res.statusCode < 300) {
+//                         resolve(data);
+//                     } else {
+//                         reject(new Error(`HTTP ${res.statusCode}: ${res.statusMessage}`));
+//                     }
+//                 });
+//             });
+//
+//             req.on('error', (err) => {
+//                 reject(err);
+//             });
+//
+//             req.setTimeout(10000, () => {
+//                 reject(new Error('Request timeout'));
+//             });
+//
+//         } catch (error) {
+//             reject(error);
+//         }
+//     });
+// }
+//
+// async function findRefValues(url) {
+//     try {
+//         const content = await getUrlContent(url);
+//         if (!content) {
+//             return [];
+//         }
+//         const pattern = /<[^>]*class=["'][^"']*\bref\b[^"']*["'][^>]*\/?>/gi;
+//         const values = [];
+//         let match;
+//         while ((match = pattern.exec(content)) !== null) {
+//             const tag = match[0];
+//             const valueMatch = tag.match(/value=["']([^"']*)["']/i);
+//             if (valueMatch) {
+//                 values.push(valueMatch[1]);
+//             }
+//         }
+//
+//         if (values.length === 0) {
+//             console.log("No tags with class containing 'ref' and value attribute found.");
+//         }
+//
+//         return values;
+//     } catch (error) {
+//         console.error(`Error fetching URL: ${error.message}`);
+//         return [];
+//     }
+// }
+// async function main() {
+//     const args = process.argv.slice(2);
+//
+//     const url = args[0];
+//     const values = await findRefValues(url);
+//
+//     if (values.length > 0) {
+//         const concatenated = values.join('');
+//         console.log(`URL: ${concatenated}`);
+//     } else {
+//         console.log("No values found to concatenate.");
+//     }
+// }
+// main().catch(console.error);
+
+
 interface UrlOutputProps {
     url: string;
 }
@@ -45,7 +122,6 @@ const UrlOutput: React.FC<UrlOutputProps> = ({ url }) => {
     if (loading) {
         return (
             <div style={{ padding: '20px', textAlign: 'center' }}>
-                <div>Loading content from: {url}</div>
                 <div style={{ marginTop: '10px' }}>Loading...</div>
             </div>
         );
@@ -56,7 +132,7 @@ const UrlOutput: React.FC<UrlOutputProps> = ({ url }) => {
             <div style={{
                 padding: '20px',
                 color: 'red',
-                backgroundColor: '#ffebee',
+                backgroundColor: '#eee',
                 borderRadius: '4px',
                 margin: '20px'
             }}>
@@ -68,7 +144,6 @@ const UrlOutput: React.FC<UrlOutputProps> = ({ url }) => {
 
     return (
         <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-            {/* Image that changes when typing completes */}
             <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                 <img
                     src={currentImage}
@@ -87,7 +162,7 @@ const UrlOutput: React.FC<UrlOutputProps> = ({ url }) => {
                 style={{
                     marginTop: '15px',
                     padding: '10px 20px',
-                    backgroundColor: '#6c757d',
+                    backgroundColor: '#66a',
                     color: 'white',
                     border: 'none',
                     borderRadius: '4px',
