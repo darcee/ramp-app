@@ -22,8 +22,6 @@ const TypeWriter: React.FC<TypeWriterProps> = ({ text, speed = 500, onComplete }
         let index = 0;
 
         const timer = setInterval(() => {
-            console.log(`Current index: ${index}, Array length: ${letters.length}`);
-
             if (index < letters.length) {
                 const currentLetter = letters[index];
                 setDisplayedText(prev => prev + currentLetter);
@@ -31,6 +29,7 @@ const TypeWriter: React.FC<TypeWriterProps> = ({ text, speed = 500, onComplete }
             } else {
                 clearInterval(timer);
                 setIsTyping(false);
+                // Call the onComplete callback when typing finishes
                 if (onComplete) {
                     onComplete();
                 }
@@ -38,7 +37,7 @@ const TypeWriter: React.FC<TypeWriterProps> = ({ text, speed = 500, onComplete }
         }, speed);
 
         return () => clearInterval(timer);
-    }, [text]);
+    }, [text, speed, onComplete]);
 
     return (
         <div>
@@ -73,4 +72,5 @@ const TypeWriter: React.FC<TypeWriterProps> = ({ text, speed = 500, onComplete }
         </div>
     );
 };
+
 export default TypeWriter;

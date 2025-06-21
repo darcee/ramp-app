@@ -1,33 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import TypeWriter from './TypeWriter';
 import image1 from '../assets/captureTheFlag.png';
 import image2 from '../assets/zencorgi.webp';
 
-interface UrlFetcherProps {
+interface UrlOutputProps {
     url: string;
 }
 
-const UrlFetcher: React.FC<UrlFetcherProps> = ({ url }) => {
+const UrlOutput: React.FC<UrlOutputProps> = ({ url }) => {
     const [content, setContent] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
     const [currentImage, setCurrentImage] = useState<string>(image1);
-    const handleTypingComplete = () => {
+    const handleTypingComplete = useCallback(() => {
         setCurrentImage(image2);
-    };
+    }, []);
     const fetchContent = async (withDelay = false) => {
         setLoading(true);
         setError('');
         setContent('');
         setCurrentImage(image1);
-
         try {
             if (withDelay) {
-                // Add 2 second delay to see loading state
                 await new Promise(resolve => setTimeout(resolve, 2000));
             }
             const response = await fetch(url);
-
             if (!response.ok) {
                 setError(`HTTP error! status: ${response.status}`);
                 return;
@@ -48,6 +45,7 @@ const UrlFetcher: React.FC<UrlFetcherProps> = ({ url }) => {
     if (loading) {
         return (
             <div style={{ padding: '20px', textAlign: 'center' }}>
+                <div>Loading content from: {url}</div>
                 <div style={{ marginTop: '10px' }}>Loading...</div>
             </div>
         );
@@ -55,15 +53,22 @@ const UrlFetcher: React.FC<UrlFetcherProps> = ({ url }) => {
 
     if (error) {
         return (
-            <>
+            <div style={{
+                padding: '20px',
+                color: 'red',
+                backgroundColor: '#ffebee',
+                borderRadius: '4px',
+                margin: '20px'
+            }}>
                 <div><strong>Error fetching:</strong> {url}</div>
                 <div>{error}</div>
-            </>
+            </div>
         );
     }
 
     return (
         <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+            {/* Image that changes when typing completes */}
             <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                 <img
                     src={currentImage}
@@ -95,4 +100,4 @@ const UrlFetcher: React.FC<UrlFetcherProps> = ({ url }) => {
     );
 };
 
-export default UrlFetcher;
+export default UrlOutput;
